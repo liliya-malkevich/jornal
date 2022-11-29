@@ -1,0 +1,11 @@
+.btn-block {
+  display: block;
+  text-align: left;
+}
+.btn-group-border {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+.landing-card {
+  width: 30%;
+  min-width: 300px;
+}

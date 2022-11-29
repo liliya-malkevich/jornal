@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.text-bl-clr {
+  color: #025388;
+}
+
+.bl-clr {
+  background-color: #025388;
+}
+
+.text-w-clr {
+  color: #fff;
+}
+
+.w-clr {
+  background-color: #fff;
+}
+.pr-emp-container {
+  height: calc(100vh - 50px);
+  width: 100%;
+  padding: 10px;
+}
+

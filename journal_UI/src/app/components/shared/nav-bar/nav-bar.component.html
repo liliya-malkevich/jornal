@@ -1,0 +1,28 @@
+<style>
+  .btn-group-xs>.btn,
+  .btn-xs {
+    padding: .25rem .4rem;
+    font-size: .775rem;
+    line-height: .5;
+    border-radius: .2rem;
+  }
+</style>
+
+<!--style="background:linear-gradient(to right, #00285f, #01C5DB)"-->
+<nav class="navbar navbar-expand-sm bl-clr navbar-dark py-1">
+  <div class="container-fluid" >
+    <a class="navbar-brand d-flex align-items-center">
+      <!--dx-button stylingMode="contained" [hidden]="disablePrevPageBtn" class="me-1" type="normal" icon="arrowleft" (click)="redirectToPreviousPage()">
+      </dx-button-->
+      <dx-button stylingMode="contained" [visible]="showSideBarBtn" class="me-2" type="normal" icon="pinleft" (click)="toggleNavbar()">
+      </dx-button>
+      Журнал - &nbsp;<u>{{titleHeader}}</u>
+    </a>
+
+  </div>
+</nav>
+
+
+
+
+

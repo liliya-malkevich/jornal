@@ -1,0 +1,149 @@
+
+
+<div class="pr-emp-container">
+  <dx-data-grid #studentGrid [dataSource]="ProblemsStud" height="100%" [showBorders]="true" [allowColumnResizing]="true"
+    [allowColumnReordering]="true" [wordWrapEnabled]="true" (onToolbarPreparing)="onToolbarEmpPreparing($event)" (onEditorPreparing)="onEditorPreparing($event)" (onRowInserted)="$event.component.navigateToRow($event.key)">
+     <dxo-load-panel [enabled]="true"></dxo-load-panel>
+    <dxo-scrolling mode="virtual" showScrollbar="always"></dxo-scrolling>
+    <dxo-paging [enabled]="true"></dxo-paging>
+    <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-selection mode="single"></dxo-selection>
+    <dxo-export [enabled]="true" [excelFilterEnabled]="true" [texts]="{exportAll: 'Экспорт в MS Excel'}"
+      fileName="Жалобы-Студенты"></dxo-export>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-editing mode="popup" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true" [useIcons]="true">
+      <dxo-popup
+      title="Информация о студенте"
+      [showTitle]="true"
+      [width]="880"
+      [height]="690"
+    >
+    </dxo-popup>
+    <dxo-form>
+      <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+        <dxi-item dataField="FIO"></dxi-item>
+        <dxi-item dataField="DopFiles"></dxi-item>
+        <dxi-item dataField="StudNumber"></dxi-item>
+        <dxi-item dataField="DateO"></dxi-item>
+        <dxi-item dataField="Number"></dxi-item>
+        <dxi-item dataField="IdStatus"></dxi-item>
+        <dxi-item dataField="NameFacult"></dxi-item>
+        <dxi-item dataField="Redirect"></dxi-item>
+        <dxi-item
+        dataField="DescProblem" editorType="dxTextArea"
+        [editorOptions]="{ height: 100 }">
+      </dxi-item>
+      <dxi-item dataField="KeysID"></dxi-item>
+      <dxi-item dataField="Note1"></dxi-item>
+        <dxi-item dataField="Note2"></dxi-item>
+
+
+      </dxi-item>
+      <dxi-item
+      itemType="group"
+      caption="Решение"
+      [colCount]="2"
+      [colSpan]="2"
+    >
+    <dxi-item dataField="DateE"></dxi-item>
+      <dxi-item dataField="SolProblems"  editorType="dxTextArea"
+      [editorOptions]="{ height: 100 }"></dxi-item>
+    </dxi-item>
+    </dxo-form>
+    </dxo-editing>
+
+    <dxi-column dataField="FIO" caption="Личные Данные">
+
+    </dxi-column>
+    <dxi-column dataField="StudNumber" caption="№ студ. билета">
+
+    </dxi-column>
+    <dxi-column dataField="Number" caption="Тел.номер">
+
+    </dxi-column>
+    <dxi-column dataField="DateO" caption="Дата обращения" width="150" >
+
+    </dxi-column>
+    <dxi-column dataField="NameFacult" caption="Факультет">
+
+    </dxi-column>
+    <dxi-column dataField="DescProblem" caption="Описание проблемы"  >
+
+    </dxi-column>
+    <dxi-column dataField="KeysID" caption="Ключевые слова"  editCellTemplate="tagBoxEditor"
+    [cellTemplate]="cellTemplate"
+    [calculateFilterExpression]="calculateFilterExpression">
+      <dxo-lookup [dataSource]="keys" valueExpr="ID" displayExpr="NameKeys" >
+      </dxo-lookup>
+      <dxo-header-filter [allowSearch]="true"></dxo-header-filter>
+    </dxi-column>
+    <dxi-column dataField="Redirect" caption="Перенаправление" >
+    </dxi-column>
+    <dxi-column dataField="DopFiles" caption="Доп файлы">
+    </dxi-column>
+    <dxi-column dataField="DateE" caption="Дата решения">
+    </dxi-column>
+    <dxi-column dataField="SolProblems" caption="Решение проблемы">
+    </dxi-column>
+    <dxi-column dataField="IdStatus" caption="Статус" [editorOptions]="editorOptions"  [allowFiltering]="false" [allowHeaderFiltering]="true">
+      <dxo-lookup [dataSource]="statuses" displayExpr="name" valueExpr="id">
+      </dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="Note1" caption="Примечание 1">
+    </dxi-column>
+    <dxi-column dataField="Note2" caption="Примечание 2">
+    </dxi-column>
+
+    <div *dxTemplate="let data of 'actionBtnGroup'">
+      <div class="d-flex align-items-center">
+        <label class="me-1">Дата обращения</label>
+        <dx-date-box [(value)]="date" type="date" width="150px"
+          [calendarOptions]="{minZoomLevel: 'century', maxZoomLevel: 'year'}" displayFormat="monthAndYear"></dx-date-box>
+        <dx-button class="ms-3" type="default" text="Применить" (onClick)="GetProblemsStudent()">
+        </dx-button>
+      </div>
+    </div>
+
+    <div *dxTemplate="let cellInfo of 'tagBoxEditor'">
+      <dx-tag-box
+        [dataSource]="keys"
+        [value]="cellInfo.value"
+        valueExpr="ID"
+        displayExpr="NameKeys"
+        [showSelectionControls]="true"
+        [maxDisplayedTags]="5"
+        [showMultiTagOnly]="false"
+        applyValueMode="useButtons"
+        [searchEnabled]="true"
+        (onValueChanged)="cellInfo.setValue($event.value)"
+        (onSelectionChanged)="cellInfo.component.updateDimensions()"
+      >
+      </dx-tag-box>
+    </div>
+
+    <div *dxTemplate="let status of 'statusTemplate'">
+      <div *ngIf="status === null" ; else elseBlock>
+      </div>
+      <div dx-template #elseBlock>
+        <img
+        src = "../../../assets/status-{{ status.id }}.svg"
+          class="status-icon middle"
+        />
+        <span class="middle">{{ status.name }}</span>
+      </div>
+    </div>
+
+    <!-- <div *dxTemplate="let date of 'DateTemplate'">
+      <div *ngIf="date === null" ; else elseBlock>
+      </div>
+      <div dx-template #elseBlock>
+        <dx-date-box id="selected-date" width="100%" [(value)]="currentValue"></dx-date-box>
+      </div>
+    </div> -->
+  </dx-data-grid>
+</div>
+
+
+
